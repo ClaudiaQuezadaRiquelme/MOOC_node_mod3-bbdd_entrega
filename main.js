@@ -41,6 +41,9 @@ rl.on('line', async (line) => {
     else if (['cf', 'fc'].includes(cmd))      { await favs.create(rl);}
     else if (['df', 'fd'].includes(cmd))      { await favs.delete(rl);}
 
+    // Debe incluirse el nuevo comando p (play) que comienza una nueva ronda de preguntas.
+    else if ('p'===cmd)  { await quiz.play(rl); }
+
     else if ('e'===cmd)  { rl.log('Bye!'); process.exit(0);}
     else                 {  rl.log('UNSUPPORTED COMMAND!');
                             user.help(rl);

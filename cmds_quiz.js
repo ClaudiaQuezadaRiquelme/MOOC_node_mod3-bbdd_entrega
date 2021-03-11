@@ -83,3 +83,15 @@ exports.delete = async (rl) => {
   rl.log(`  ${id} deleted from DB`);
 }
 
+// los quizzes almacenados en el sistema (en concreto el campo question de cada quiz) van mostrándose (usando la función rl.questionP) de manera aleatoria y consecutiva para tratar de contestarlos.
+exports.play = async (rl) => {
+  let quizes = await Quiz.findAll(); // obtener todos id de los quizes
+  let idArr = [];
+  quizes.forEach( q => idArr.push(q.id) ); // guardamos los ID en un array que vamos a desordenar
+  idArr = idArr.sort( () => { return Math.random() - 0.5 }); // ordena los id al azar
+  
+  idArr.forEach( async id => {
+    let quiz = await Quiz.findByPk(Number(id));
+    rl.log(`${quiz.id}, ${quiz.question}, ${quiz.answer}`);
+  })
+}
