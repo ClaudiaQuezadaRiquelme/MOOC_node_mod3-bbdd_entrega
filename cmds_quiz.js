@@ -90,19 +90,22 @@ exports.play = async (rl) => {
   quizzes.forEach( q => idArr.push(q.id) ); // guardamos los ID en un array que vamos a desordenar
   idArr = idArr.sort( () => { return Math.random() - 0.5 }); // ordena los id al azar
   
-  rl.log('The round of quizzes begins!!!\n')
-  let count = 1;
+  let score = 0; // almacenamos puntaje
 
+  // recorremos la lista de id desordenada para mostrar las preguntas al azar
   for (const id of idArr) { // foreach doesn´t work with async/await 
     let quiz = await Quiz.findByPk(Number(id));
     let correctAnswer = quiz.answer.toLowerCase().trim();
     let enteredAnswer = await rl.questionP(quiz.question);
     if (enteredAnswer.toLowerCase().trim() === correctAnswer) {
       rl.log(`The answer "${enteredAnswer}" is right!`);
-    } else {
+      score += 1; // puntaje
+    } else { 
       rl.log(`The answer "${enteredAnswer}" is wrong!`);
+      break; // si se contesta incorrectamente, el juego termina. No se muestran más quizzes
     }
-    count += 1;
   }
+  // postrar score cuando se hayan terminado los quizzes
+  rl.log(`Score: ${score}`);
   
 }
