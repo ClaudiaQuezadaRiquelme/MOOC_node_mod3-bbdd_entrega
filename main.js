@@ -44,6 +44,9 @@ rl.on('line', async (line) => {
     // Debe incluirse el nuevo comando p (play) que comienza una nueva ronda de preguntas.
     else if ('p'===cmd)  { await quiz.play(rl); }
 
+    // las puntuaciones de los usuarios deben poder consultarse usando el comando ls (list score)
+    else if ('ls'===cmd) { /* await ; */ }
+
     else if ('e'===cmd)  { rl.log('Bye!'); process.exit(0);}
     else                 {  rl.log('UNSUPPORTED COMMAND!');
                             user.help(rl);
