@@ -9,37 +9,33 @@ exports.store = async (rl, userName, score ) => {
 
     // Si el tipo de userName no es valido, cancelar la consulta
     if (typeof userName !== 'string') {
-        console.log('type of userName invalid');
         throw new Error("User name type invalid!");
         }
 
     let user = await User.findOne({ where: { name: userName } });
 
     if (!user) { // si el usuario no se encuentra, crearlo
-        console.log('si el usuario no se encuentra, crearlo');
         user = await User.create( 
             { name: userName, age: 0 } // nombre introducido y edad 0.
         );
-        console.log(`Usuario creado: ${user.name}, edad ${user.age}`);
-        // const storeScore = await Score.create( // crear nuevo score
-        //     { wins: score, userId: user.id }
-        // );
-        // console.log(`Score creado: score ${storeScore.wins} userId ${storeScore.userId}`);
-    } 
-    // else {
-    //     // almacenar la puntuación del usuario existente
-    //     console.log('almacenar la puntuación del usuario existente');
-    //     const n = await Score.update(
-    //         { wins: score }, 
-    //         { where: { userId: user.id } }
-    //     );
-    //     if (n[0]===0) throw new Error(`  Score is not in DB`);
-    //     console.log(`Score actualizado: score ${n.wins}, userId ${n.userId}`);
-    // }
+    }
+
     const storeScore = await Score.create( // crear nuevo score
         { wins: score, userId: user.id }
     );
-    console.log(`Score creado: score ${storeScore.wins} userId ${storeScore.userId}`);
-    
-    
+}
+
+exports.list = async (rl) => {
+    let scores = await Score.findAll(
+        { include: [{
+            model: User,
+            as: 'gamer'
+          }]
+        }
+    );
+    // score format:
+    // Peter|3|Tue, 18 Feb 2020 14:20:27 GMT
+    scores.forEach( 
+        s => rl.log(`  ${s.gamer.name}|${s.wins}|${s.createdAt.toUTCString()}`)
+    );
 }

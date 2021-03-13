@@ -2,6 +2,7 @@
 const user = require("./cmds_user.js");
 const quiz = require("./cmds_quiz.js");
 const favs = require("./cmds_favs.js");
+const score = require("./cmds_score.js");
 const readline = require('readline');
 
 const rl = readline.createInterface({
@@ -45,7 +46,7 @@ rl.on('line', async (line) => {
     else if ('p'===cmd)  { await quiz.play(rl); }
 
     // las puntuaciones de los usuarios deben poder consultarse usando el comando ls (list score)
-    else if ('ls'===cmd) { /* await ; */ }
+    else if ('ls'===cmd) {  await score.list(rl); }
 
     else if ('e'===cmd)  { rl.log('Bye!'); process.exit(0);}
     else                 {  rl.log('UNSUPPORTED COMMAND!');
