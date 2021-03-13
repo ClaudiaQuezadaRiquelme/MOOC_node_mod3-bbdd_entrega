@@ -80,9 +80,14 @@ Score.init(
 );
 
 Score.belongsTo(User, {
-  as: 'User',
+  as: 'gamer',
+  foreignKey: 'userId',
+  onDelete: 'CASCADE'
+});
+User.hasMany(Score, {
+  as: 'scores', 
   foreignKey: 'userId'
-})
+});
 
 module.exports = sequelize;
 

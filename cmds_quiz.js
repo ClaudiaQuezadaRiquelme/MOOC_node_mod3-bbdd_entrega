@@ -1,4 +1,4 @@
-
+const Score = require("./cmds_score.js");
 const {User, Quiz} = require("./model.js").models;
 
 // Show all quizzes in DB including <id> and <author>
@@ -105,7 +105,13 @@ exports.play = async (rl) => {
       break; // si se contesta incorrectamente, el juego termina. No se muestran más quizzes
     }
   }
-  // postrar score cuando se hayan terminado los quizzes
+  // mostrar score cuando se hayan terminado los quizzes
   rl.log(`Score: ${score}`);
+
+  // solicitar nombre de usuario para guardar su puntuación
+  const userName = await rl.questionP("Enter your name to store your score");
+
+  // guardar score en la base de datos
+  await Score.store(rl, userName, score);
   
 }
